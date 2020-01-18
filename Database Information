@@ -1,0 +1,16 @@
+Domain : cop4331.us
+
+TABLES:
+
+User
+ID int(11)                          <- Primary Key
+Username varchar(50)
+Password varchar(50)
+Firstname varchar(50)
+Lastname varchar(50)
+
+Contacts
+ID int(11)                         <- Primary Key
+Firstname varchar(50)
+Lastname varchar(50)
+Phone varchar(50)
