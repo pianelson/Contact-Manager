@@ -1,10 +1,10 @@
 <?php
 	$inData = getRequestInfo();
     
-    $firstname = $inData["firstname"];
-	$lastname = $inData["lastname"];
-	$username = $inData["username"];
-    $password = $inData["password"];
+    $firstname = $inData["Firstname"];
+	$lastname = $inData["Lastname"];
+	$username = $inData["Username"];
+    $password = $inData["Password"];
     
 	$conn = new mysqli("localhost", "AdminUser", "ForProject1!", "ContactManager");
 	if ($conn->connect_error) 
