@@ -1,9 +1,8 @@
 var urlBase = 'http://cop4331.us/APIS';
 var extension = 'php';
 
-//onclick="doLogin();"
-
 var userId = 0;
+var contactId = 0;
 var firstName = "";
 var lastName = "";
 
@@ -55,7 +54,7 @@ function saveCookie()
 	var minutes = 20;
 	var date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
+	document.cookie = "userId=" + userId + ", contactId=" + contactId + ";expires=" + date.toGMTString();
 }
 
 function readCookie()
@@ -67,27 +66,19 @@ function readCookie()
 	{
 		var thisOne = splits[i].trim();
 		var tokens = thisOne.split("=");
-		if( tokens[0] == "firstName" )
-		{
-			firstName = tokens[1];
-		}
-		else if( tokens[0] == "lastName" )
-		{
-			lastName = tokens[1];
-		}
-		else if( tokens[0] == "userId" )
+		if( tokens[0] == "userId" )
 		{
 			userId = parseInt( tokens[1].trim() );
+		}
+		if( tokens[0] == "contactId" )
+		{
+			contactId = tokens[1];
 		}
 	}
 	
 	if( userId < 0 )
 	{
 		window.location.href = "index.html";
-	}
-	else
-	{
-		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
 	}
 }
 
@@ -134,4 +125,47 @@ function createUser()
 		document.getElementById("createResult").innerHTML = err.message;
 	}
 	document.getElementById("createResult").innerHTML = "Account Created! Please log in.";
+}
+
+function createContact() {
+	var firstName = document.getElementById("").value;
+	var lastName = document.getElementById("").value;
+	var phone = document.getElementById("").value;
+
+	var jsonPayload = '{"Firstname" :"'+ firstName + '", "Lastname" : "' + lastName + '", "UserID" : "' + userId + '", "Phone" : "' + phone + '"}';
+	var url = urlBase + '/AddContact.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{  
+		xhr.send(jsonPayload);
+		var jsonObject = JSON.parse( xhr.responseText );
+		
+		var response = jsonObject.success;
+		
+		if( response != "ADDED")
+		{
+			document.getElementById("").innerHTML = "Error Occurred during contact creation. Please check data and try again.";
+			return;
+		}
+	}
+	catch(err)
+	{
+		document.getElementById("").innerHTML = err.message;
+	}
+	document.getElementById("").innerHTML = "Contact Created!";
+}
+
+function searchContact() {
+	
+}
+
+function updateContact() {
+
+}
+
+function removeContact() {
+	
 }
