@@ -3,8 +3,8 @@
 	$inData = getRequestInfo();
 	
 	$id = 0;
-	$firstname = "";
-	$lastname = "";
+	$firstName = "";
+	$lastName = "";
 
 	$conn = new mysqli("localhost", "AdminUser", "ForProject1!", "ContactManager");
 	if ($conn->connect_error) 
@@ -20,11 +20,11 @@
 		{
 			// Gather the returned information
 			$row = $result->fetch_assoc();
-			$firstname = $row["Firstname"];
-			$lastname = $row["Lastname"];
+			$firstName = $row["Firstname"];
+			$lastName = $row["Lastname"];
 			$id = $row["UserID"];
 			
-			returnWithInfo($firstname, $lastname, $id );
+			returnWithInfo($firstName, $lastName, $id );
 		}
 		else
 		{
@@ -50,9 +50,9 @@
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo( $firstname, $lastname, $id )
+	function returnWithInfo( $firstName, $lastName, $id )
 	{
-		$retValue = '{"UserID":' . $id . ',"Firstname":"' . $firstname . '","Lastname":"' . $lastname . '","error":""}';
+		$retValue = '{"UserID":' . $id . ',"Firstname":"' . $firstName . '","Lastname":"' . $lastName . '","error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	

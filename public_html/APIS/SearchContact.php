@@ -2,8 +2,8 @@
 	$inData = getRequestInfo();
     
     $userId = $inData["UserID"];
-    $firstname = $inData["Firstname"];
-	$lastname = $inData["Lastname"];
+    $firstName = $inData["Firstname"];
+	$lastName = $inData["Lastname"];
 	$phone = $inData["Phone"];
     
 	$conn = new mysqli("localhost", "AdminUser", "ForProject1!", "ContactManager");
@@ -27,13 +27,13 @@
 		}
 		
 		// Fill out the rest of the form with the present information
-        if ($firstname != '') 
+        if ($firstName != '') 
         {
-            $sql .= " and `Firstname` like '" . $firstname . "'";
+            $sql .= " and `Firstname` like '" . $firstName . "'";
         }
-        if ($lastname != '') 
+        if ($lastName != '') 
         {
-            $sql .= " and `Lastname` like '" . $lastname . "'";
+            $sql .= " and `Lastname` like '" . $lastName . "'";
         }
         if ($phone != '') 
         {

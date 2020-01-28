@@ -1,8 +1,8 @@
 <?php
 	$inData = getRequestInfo();
     
-    $firstname = $inData["Firstname"];
-	$lastname = $inData["Lastname"];
+    $firstName = $inData["Firstname"];
+	$lastName = $inData["Lastname"];
 	$username = $inData["Username"];
     $password = $inData["Password"];
     
@@ -12,7 +12,7 @@
 		returnWithError( $conn->connect_error );
 	} 
 	// If any of the fields are missing bail
-	if ($firstname == '' || $lastname == '' || $username == '' || $password == '')
+	if ($firstName == '' || $lastName == '' || $username == '' || $password == '')
 	{
 		returnWithError('INCOMPLETE DATA');
 	}
@@ -20,7 +20,7 @@
 	{
 		// Create sql form to add new user
         $sql = "insert into Users (Firstname,Lastname,Username,Password) 
-        VALUES ('" . $firstname . "','" . $lastname ."','" . $username . "','" . $password . "')";
+        VALUES ('" . $firstName . "','" . $lastName ."','" . $username . "','" . $password . "')";
 		if( $result = $conn->query($sql) != TRUE )
 		{
 			returnWithError( $conn->error );

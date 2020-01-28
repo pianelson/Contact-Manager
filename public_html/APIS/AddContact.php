@@ -1,8 +1,8 @@
 <?php
 	$inData = getRequestInfo();
     
-    $firstname = $inData["Firstname"];
-	$lastname = $inData["Lastname"];
+    $firstName = $inData["Firstname"];
+	$lastName = $inData["Lastname"];
 	$phone = $inData["Phone"];
     $userId = $inData["UserID"];
     
@@ -18,7 +18,7 @@
 		{
 			// Create the form to add a new contact with given information
 			$sql = "insert into Contacts (Firstname,Lastname,UserId,Phone) 
-			VALUES ('" . $firstname . "','" . $lastname ."','" . $userId . "','" . $phone . "')";
+			VALUES ('" . $firstName . "','" . $lastName ."','" . $userId . "','" . $phone . "')";
 			if( $result = $conn->query($sql) != TRUE )
 			{
 				returnWithError( $conn->error );

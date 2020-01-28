@@ -2,8 +2,8 @@
 	$inData = getRequestInfo();
 	
 	$contactId = $inData["ContactID"];
-    $firstname = $inData["Firstname"];
-	$lastname = $inData["Lastname"];
+    $firstName = $inData["Firstname"];
+	$lastName = $inData["Lastname"];
 	$phone = $inData["Phone"];
 	
 	$conn = new mysqli("localhost", "AdminUser", "ForProject1!", "ContactManager");
@@ -20,18 +20,18 @@
 		// If no unique contact ID bail
         if ($contactId != '') 
         {
-			if ($firstname != '') 
+			if ($firstName != '') 
 			{
-				$sql .= "`Firstname` = '" . $firstname . "'";
+				$sql .= "`Firstname` = '" . $firstName . "'";
 				$alreadySet = TRUE;
 			}
-			if ($lastname != '') 
+			if ($lastName != '') 
 			{
 				// If there is a value before this add a comma
 				if ($alreadySet) {
 					$sql .= ",";
 				}
-				$sql .= " `Lastname` = '" . $lastname . "'";
+				$sql .= " `Lastname` = '" . $lastName . "'";
 				$alreadySet = TRUE;
 			}
 			if ($phone != '') 
