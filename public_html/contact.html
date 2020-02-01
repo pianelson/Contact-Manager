@@ -53,6 +53,7 @@ $(document).ready(function(){
 					<div class="container-sm" class="col-sm-6">
                         <button type="button" class="btn btn-primary" href="#addContact"  data-toggle="modal"><i class="material-icons"></i><span>Add New Contact</span></button>
 						<button type="button" class="btn btn-primary" href="#deleteContact"  data-toggle="modal"><i class="material-icons"></i><span>Delete</span></button>	
+						<button type="button" class="btn btn-primary" href="#logOut" data-toggle="modal"><i class="material-icons"></i><span>Log Out</span></button>	
 						<div class="mx-auto" style="width: 200px;">
 							Search for a Contact
 						  </div>
@@ -194,6 +195,26 @@ $(document).ready(function(){
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
 						<input type="submit" class="btn btn-danger" onclick="removeContact();"  value="Delete">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- If you press log out -->
+	<div id="logOut" class="modal fade" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Log Out</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">					
+						<p>Are you sure you want to log out?</p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input type="submit" class="btn btn-danger" onclick="doLogout();"  value="logOut">
 					</div>
 				</form>
 			</div>
