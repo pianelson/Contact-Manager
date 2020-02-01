@@ -66,11 +66,11 @@ function readCookie()
 	{
 		var thisOne = splits[i].trim();
 		var tokens = thisOne.split("=");
-		if( tokens[0] == "userId" )
+		if( tokens[0] === "userId" )
 		{
 			userId = parseInt( tokens[1].trim() );
 		}
-		if( tokens[0] == "contactId" )
+		if( tokens[0] === "contactId" )
 		{
 			contactId = tokens[1];
 		}
@@ -114,7 +114,7 @@ function createUser()
 		
 		var response = jsonObject.success;
 		
-		if( response != "CREATED")
+		if( response !== "CREATED")
 		{
 			document.getElementById("createResult").innerHTML = "Error Occurred during account creation. Please check data and try again.";
 			return;
@@ -122,17 +122,22 @@ function createUser()
 	}
 	catch(err)
 	{
-		document.getElementById("createResult").innerHTML = err.message;
+		// document.getElementById("createResult").innerHTML = err.message;
 	}
 	document.getElementById("createResult").innerHTML = "Account Created! Please log in.";
 }
 
-function createContact() {
-	var firstName = document.getElementById("").value;
-	var lastName = document.getElementById("").value;
-	var phone = document.getElementById("").value;
+function createContact() 
+{
+	var firstName = document.getElementById("addFirstName").value;
+	var lastName = document.getElementById("addLastName").value;
+	var phone = document.getElementById("addPhone").value;
+	readCookie();
+	
+	// Reload the page so that the list is cleared out for new list or no list if invalid search
+	location.reload();
 
-	var jsonPayload = '{"Firstname" :"'+ firstName + '", "Lastname" : "' + lastName + '", "UserID" : "' + userId + '", "Phone" : "' + phone + '"}';
+	var jsonPayload = '{"UserID" : "' + userId + '", "Firstname" :"'+ firstName + '", "Lastname" : "' + lastName + '", "Phone" : "' + phone + '"}';
 	var url = urlBase + '/AddContact.' + extension;
 
 	var xhr = new XMLHttpRequest();
@@ -145,9 +150,190 @@ function createContact() {
 		
 		var response = jsonObject.success;
 		
-		if( response != "ADDED")
+		if( response !== "ADDED")
 		{
-			document.getElementById("").innerHTML = "Error Occurred during contact creation. Please check data and try again.";
+			document.getElementById("addError").innerHTML = "Error Occurred during contact creation. Please check data and try again.";
+			return;
+		}
+	}
+	catch(err)
+	{
+		document.getElementById("addError").innerHTML = err.message;
+	}
+	document.getElementById("addError").innerHTML = "Contact Created!";
+}
+
+function searchContact() 
+{
+	var firstName = document.getElementById("firstName").value;
+	var lastName = document.getElementById("lastName").value;
+	var phone = document.getElementById("phone").value;
+	readCookie();
+
+	var jsonPayload = '{"UserID" : "' + userId + '", "Firstname" :"'+ firstName + '", "Lastname" : "' + lastName + '", "Phone" : "' + phone + '"}';
+	var url = urlBase + '/SearchContact.' + extension;
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{  
+		xhr.send(jsonPayload);
+		var jsonObject = JSON.parse( xhr.responseText );
+		
+		if( jsonObject.error === "No Records Found")
+		{
+			document.getElementById("searchError").innerHTML = "No Contacts found.";
+			return;
+		}
+		else {
+			var element = '';
+			for( var i=0; i<jsonObject.results.length; i++ )
+			{
+				element += '\
+				<tr> \
+					<td> \
+						<span class="custom-checkbox"> \
+							<input class="checks" type="checkbox" id="checkbox' + (i+1) + '" name="options[]" value="' + jsonObject.results[i].ContactID + '"> \
+							<label for="checkbox' + (i+1) + '"></label> \
+						</span> \
+					</td> \
+					<td>' + jsonObject.results[i].Firstname + '</td> \
+					<td>' + jsonObject.results[i].Lastname + '</td> \
+					<td>'+ jsonObject.results[i].Phone +'</td> \
+					<td> \
+						<a href="#editContact"  data-toggle="modal"><i data-toggle="tooltip" title="" data-original-title="Edit"></i>Edit</a> \
+					</td> \
+				</tr>';
+			}
+			document.getElementsByTagName("tbody")[0].innerHTML = element;
+		}
+	}
+	catch(err)
+	{
+		// sdocument.getElementById("searchError").innerHTML = err.message;
+	}
+}
+
+function showAllContacts() 
+{
+	readCookie();
+
+	var jsonPayload = '{"UserID" : "' + userId + '", "Firstname" :"'+'", "Lastname" : "'+'", "Phone" : "'+'"}';
+	var url = urlBase + '/SearchContact.' + extension;
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{  
+		xhr.send(jsonPayload);
+		var jsonObject = JSON.parse( xhr.responseText );
+		
+		if( jsonObject.error === "No Records Found")
+		{
+			document.getElementById("searchError").innerHTML = "No Contacts found.";
+			return;
+		}
+		else {
+			var element = '';
+			for( var i=0; i<jsonObject.results.length; i++ )
+			{
+				element += '\
+				<tr> \
+					<td> \
+						<span class="custom-checkbox"> \
+							<input class="checks" type="checkbox" id="checkbox' + (i+1) + '" name="options[]" value="' + jsonObject.results[i].ContactID + '"> \
+							<label for="checkbox' + (i+1) + '"></label> \
+						</span> \
+					</td> \
+					<td>' + jsonObject.results[i].Firstname + '</td> \
+					<td>' + jsonObject.results[i].Lastname + '</td> \
+					<td>'+ jsonObject.results[i].Phone +'</td> \
+					<td> \
+						<a href="#editContact" onClick="storeContactId(document.getElementById(&quot;checkbox' + (i+1) + '&quot;).value);" data-toggle="modal"><i data-toggle="tooltip" title="" data-original-title="Edit"></i>Edit</a> \
+					</td> \
+				</tr>';
+			}
+			document.getElementsByTagName("tbody")[0].innerHTML = element;
+		}
+	}
+	catch(err)
+	{
+		// sdocument.getElementById("searchError").innerHTML = err.message;
+	}
+}
+
+function removeContact() 
+{
+	var checks = document.getElementsByClassName('checks');
+	var str = '';
+
+	for(i = 0; i < checks.length; i++)
+	{
+		if (checks[i].checked === true) 
+		{
+			var jsonPayload = '{"ContactID" :"'+ checks[i].value + '"}';
+			var url = urlBase + '/RemoveContact.' + extension;
+
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", url, false);
+			xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+			try
+			{  
+				xhr.send(jsonPayload);
+				var jsonObject = JSON.parse( xhr.responseText );
+				
+				var response = jsonObject.success;
+				
+				if( response !== "REMOVED")
+				{
+					document.getElementById("").innerHTML = "Error removing contact, please refresh and try again";
+					return;
+				}
+			}
+			catch(err)
+			{
+				document.getElementById("").innerHTML = err.message;
+			}
+		}
+	}
+	// Reload the page to signify removal of contacts
+	location.reload();
+}
+
+function storeContactId(newContactID) 
+{
+	readCookie();
+	contactId = newContactID;
+	saveCookie();
+}
+
+
+function updateContact() 
+{
+	readCookie();
+
+	var firstName = document.getElementById("editFirstName").value;
+	var lastName = document.getElementById("editLastName").value;
+	var phone = document.getElementById("editPhone").value;
+
+	var jsonPayload = '{"ContactID" : "' + contactId + '", "Firstname" :"'+ firstName + '", "Lastname" : "' + lastName + '", "Phone" : "' + phone + '"}';
+	var url = urlBase + '/UpdateContact.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{  
+		xhr.send(jsonPayload);
+		var jsonObject = JSON.parse( xhr.responseText );
+		
+		var response = jsonObject.success;
+		
+		if( response !== "UPDATED")
+		{
+			document.getElementById("").innerHTML = "Error while updating contact. Please refresh and try again.";
 			return;
 		}
 	}
@@ -155,17 +341,5 @@ function createContact() {
 	{
 		document.getElementById("").innerHTML = err.message;
 	}
-	document.getElementById("").innerHTML = "Contact Created!";
-}
-
-function searchContact() {
-	
-}
-
-function updateContact() {
-
-}
-
-function removeContact() {
-	
+	document.getElementById("").innerHTML = "Contact Updated!";
 }
