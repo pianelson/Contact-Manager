@@ -10,11 +10,7 @@ function doLogin()
 {	
 	var username = document.getElementById("username").value;
 	var password = document.getElementById("password").value;
-	var hash = md5( password ); 
-
-
-    
-	document.getElementById("loginResult").innerHTML = "";
+	var hash = md5( password );  // Hash the password
 
 	var jsonPayload = '{"Username" : "' + username + '", "Password" : "' + hash + '"}';
 	var url = urlBase + '/Login.' + extension;
@@ -29,6 +25,7 @@ function doLogin()
 		
 		userId = jsonObject.UserID;
 		
+		// If user ID is less than 1 no user exists with given credentials
 		if( userId < 1 )
 		{
 			document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
@@ -38,8 +35,10 @@ function doLogin()
 		firstName = jsonObject.Firstname;
 		lastName = jsonObject.Lastname;
 
+		// Store the credentials in a cookie
 		saveCookie();
 	
+		// Open the next contacts page
 		window.location.href = "contact.html";
 	}
 	catch(err)
@@ -59,6 +58,7 @@ function saveCookie()
 
 function readCookie()
 {
+	// Read the userId and contactId (if any) from cookie
 	userId = -1;
 	var data = document.cookie;
 	var splits = data.split(",");
@@ -76,6 +76,7 @@ function readCookie()
 		}
 	}
 	
+	// If userId is 0 return to log in
 	if( userId < 0 )
 	{
 		window.location.href = "index.html";
@@ -84,6 +85,7 @@ function readCookie()
 
 function doLogout()
 {
+	// Reset the cookie and stored values and return to log in
 	userId = 0;
 	contactId = 0;
 	document.cookie = "userId= ,contactId= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
@@ -121,7 +123,7 @@ function createUser()
 	}
 	catch(err)
 	{
-		// document.getElementById("createResult").innerHTML = err.message;
+		document.getElementById("createResult").innerHTML = err.message;
 	}
 	document.getElementById("createResult").innerHTML = "Account Created! Please log in.";
 }
@@ -167,6 +169,8 @@ function searchContact()
 	var firstName = document.getElementById("firstName").value;
 	var lastName = document.getElementById("lastName").value;
 	var phone = document.getElementById("phone").value;
+
+	// Read the cookie for userId to search through this User's contacts
 	readCookie();
 
 	var jsonPayload = '{"UserID" : "' + userId + '", "Firstname" :"'+ firstName + '", "Lastname" : "' + lastName + '", "Phone" : "' + phone + '"}';
@@ -189,6 +193,7 @@ function searchContact()
 			var element = '';
 			for( var i=0; i<jsonObject.results.length; i++ )
 			{
+				// Create the elements with the checkboxes and information for contacts page
 				element += '\
 				<tr> \
 					<td> \
@@ -210,12 +215,13 @@ function searchContact()
 	}
 	catch(err)
 	{
-		// sdocument.getElementById("searchError").innerHTML = err.message;
+		document.getElementById("searchError").innerHTML = err.message;
 	}
 }
 
 function showAllContacts() 
 {
+	// Same as search contacts but with an empty search string in order to grab all contacts
 	readCookie();
 
 	var jsonPayload = '{"UserID" : "' + userId + '", "Firstname" :"'+'", "Lastname" : "'+'", "Phone" : "'+'"}';
@@ -259,7 +265,7 @@ function showAllContacts()
 	}
 	catch(err)
 	{
-		// sdocument.getElementById("searchError").innerHTML = err.message;
+		document.getElementById("searchError").innerHTML = err.message;
 	}
 }
 
@@ -297,12 +303,14 @@ function removeContact()
 			}
 		}
 	}
-	// Reload the page to signify removal of contacts
+	// Reload the page to show all contacts after removal
 	location.reload();
 }
 
 function storeContactId(newContactID) 
 {
+	// Read the cookie to grab the userId value 
+	// then store them again but with the contactId that will be updated
 	readCookie();
 	contactId = newContactID;
 	saveCookie();
