@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-<title>My Contacts!</title>
+<title>Keep in Touch!</title>
 
  <!-- Compiled and minified CSS from and bootstrap-->
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -48,23 +48,25 @@ $(document).ready(function(){
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h2>Manage <b>My Contacts!</b></h2>
+                        <h2>Remember to <b>Keep in touch!</b></h2>
                     </div>
 					<div class="container-sm" class="col-sm-6">
                         <button type="button" class="btn btn-primary" href="#addContact"  data-toggle="modal"><i class="material-icons"></i><span>Add New Contact</span></button>
-						<button type="button" class="btn btn-primary" href="#deleteContact"  data-toggle="modal"><i class="material-icons"></i><span>Delete</span></button>	
-						<button type="button" class="btn btn-primary" href="#logOut" data-toggle="modal"><i class="material-icons"></i><span>Log Out</span></button>	
-						<div class="mx-auto" style="width: 200px;">
-							Search for a Contact
-						  </div>
-                                <form class="form-inline">
-									<input class="form-control mr-sm-2" id="firstName" type="search" placeholder="First Name" aria-label="Search">
-									<input class="form-control mr-sm-2" id="lastName" type="search" placeholder="Last Name" aria-label="Search">
-									<input class="form-control mr-sm-2" id="phone" type="search" placeholder="Phone Number" aria-label="Search">
-								  </form>
-								  <span id="searchError"></span>
-								  <button type="button" class="btn btn-primary" onclick="searchContact();" data-toggle="modal"><i class="material-icons"></i><span>Search</span></button>	
-								  
+                        <button type="button" class="btn btn-primary" href="#deleteContact"  data-toggle="modal"><i class="material-icons"></i><span>Delete</span></button>
+                        <button type="button" class="btn btn-primary" href="#logOut" data-toggle="modal"><i class="material-icons"></i><span>Log Out</span></button>
+                    </div>
+                    <div id="search"  >
+                        <form class="form-inline">
+
+                        <input class="form-control mr-sm-2" id="firstName" type="search" placeholder="Search contact" aria-label="Search"> 
+                        <!-- <span>or</span>
+						<input class="form-control mr-sm-2" id="lastName" type="search" placeholder="Last Name" aria-label="Search">
+						<span>or</span>
+						<input class="form-control mr-sm-2" id="phone" type="search" placeholder="Phone Number" aria-label="Search"> -->
+                         <button type="button" class="btn btn-primary" onclick="searchContact();" data-toggle="modal"><i class="material-icons"></i><span>Search</span></button>
+                         <span id="searchError"></span>
+                        </form>
+
                     </div>
                 </div>
             </div>
@@ -124,7 +126,7 @@ $(document).ready(function(){
 				<form>
 					<div class="modal-header">						
 						<h4 class="modal-title">Add Contact</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close Account Info Modal Box">&times;</button>
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
@@ -156,7 +158,7 @@ $(document).ready(function(){
 				<form>
 					<div class="modal-header">						
 						<h4 class="modal-title">Edit Contact</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close Account Info Modal Box">&times;</button>
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
@@ -187,7 +189,7 @@ $(document).ready(function(){
 				<form>
 					<div class="modal-header">						
 						<h4 class="modal-title">Delete Contact</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close Account Info Modal Box">&times;</button>
 					</div>
 					<div class="modal-body">					
 						<p>Are you sure you want to delete this contact?</p>

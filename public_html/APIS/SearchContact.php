@@ -29,15 +29,15 @@
 		// Fill out the rest of the form with the present information
         if ($firstName != '') 
         {
-            $sql .= " and `Firstname` like '" . $firstName . "'";
+            $sql .= " and `Firstname` like '%" . $firstName . "%'";
         }
         if ($lastName != '') 
         {
-            $sql .= " and `Lastname` like '" . $lastName . "'";
+            $sql .= " and `Lastname` like '%" . $lastName . "%'";
         }
         if ($phone != '') 
         {
-            $sql .= " and `Phone` like '" . $phone . "'";
+            $sql .= " and `Phone` like '%" . $phone . "%'";
         }
         
         $result = $conn->query($sql);

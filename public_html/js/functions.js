@@ -136,7 +136,7 @@ function createContact()
 	readCookie();
 	
 	// Reload the page so that the list is cleared out for new list or no list if invalid search
-	location.reload();
+	refreshPage();
 
 	var jsonPayload = '{"UserID" : "' + userId + '", "Firstname" :"'+ firstName + '", "Lastname" : "' + lastName + '", "Phone" : "' + phone + '"}';
 	var url = urlBase + '/AddContact.' + extension;
@@ -166,9 +166,9 @@ function createContact()
 
 function searchContact() 
 {
-	var firstName = document.getElementById("firstName").value;
-	var lastName = document.getElementById("lastName").value;
-	var phone = document.getElementById("phone").value;
+	firstName = document.getElementById("firstName").value;
+	lastName = "";
+	phone = "";
 
 	// Read the cookie for userId to search through this User's contacts
 	readCookie();
@@ -186,8 +186,20 @@ function searchContact()
 		
 		if( jsonObject.error === "No Records Found")
 		{
-			document.getElementById("searchError").innerHTML = "No Contacts found.";
-			return;
+			var element = '';
+			// Create the elements with the checkboxes and information for contacts page
+			element += '\
+			<tr> \
+				<td> \
+					<span class="custom-checkbox"> \
+						<input type="checkbox" id="checkbox1" name="options[]" value=""> \
+						<label for="checkbox1"></label> \
+					</span> \
+				</td> \
+				<td> No Contacts Found </td> \
+			</tr>';
+			
+			document.getElementsByTagName("tbody")[0].innerHTML = element;
 		}
 		else {
 			var element = '';
@@ -217,6 +229,10 @@ function searchContact()
 	{
 		document.getElementById("searchError").innerHTML = err.message;
 	}
+}
+
+function refreshPage() {
+	location.reload();
 }
 
 function showAllContacts() 
@@ -304,7 +320,7 @@ function removeContact()
 		}
 	}
 	// Reload the page to show all contacts after removal
-	location.reload();
+	refreshPage();
 }
 
 function storeContactId(newContactID) 
